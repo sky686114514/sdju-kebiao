@@ -1,4 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+// 必须显式 import：Kotlin DSL 里裸写 `java.util.Properties` 会被解析成
+// JavaPluginExtension 访问器 `java` 加 `.util`，报 Unresolved reference 'util'。
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -8,6 +11,22 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
 }
+
+// ---- 正式签名（可选）----
+// 密钥库与口令放在仓库外的 F:/AndroidDev/keystores/ 下，仓库内只留一个被 .gitignore
+// 挡住的 keystore.properties 指过去。这份 properties **刻意不随仓库分发**：
+// 签名私钥泄露后任何人都能伪造同包名的"升级包"，所以它不能进公开仓库。
+//
+// 别人 clone 后没有这个文件是**正常状态**，此时 release 构建退化为未签名产物，
+// 但 debug 构建与单测必须照常可用 —— 所以这里全程判空，绝不让缺失把构建拖死。
+val keystorePropsFile = rootProject.file("keystore.properties")
+val keystoreProps = Properties().apply {
+    if (keystorePropsFile.exists()) {
+        keystorePropsFile.inputStream().use { load(it) }
+    }
+}
+val hasReleaseSigning = keystorePropsFile.exists() &&
+    !keystoreProps.getProperty("storeFile").isNullOrBlank()
 
 android {
     namespace = "com.kebiao.app"
@@ -23,6 +42,17 @@ android {
         vectorDrawables { useSupportLibrary = true }
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = file(keystoreProps.getProperty("storeFile"))
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         debug {
             isMinifyEnabled = false
@@ -30,6 +60,10 @@ android {
         release {
             isMinifyEnabled = false // 自用不上架，不做混淆（Out-of-Scope）
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            // 缺 keystore.properties 时保持未签名，不报错（详见文件上方注释）
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
 
