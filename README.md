@@ -2,7 +2,14 @@
 
 给上海电机学院在读学生用的一款 Android 课表 App：从学校教务系统直接导入课表，落在本地数据库里，打开就看今天上什么课、几点、在哪。无广告、无账号、无服务器。
 
+<p align="center">
+  <img src="docs/images/today.png" width="300" alt="今日视图：当天课程卡片，含节次时间与上课地点" />
+  &nbsp;&nbsp;
+  <img src="docs/images/week.png" width="300" alt="周视图：一周课程网格，可按周次切换" />
+</p>
+
 ---
+
 
 ## 当前适配范围（请先读这一节）
 
