@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  后端模块所需的字符串资源（提醒 / 小组件）。
+  刻意单独成文件而不是并进 values/strings.xml：那是 UI 模块的文件，
+  两个模块各写各的，避免并行开发时的覆盖冲突。
+  文案纪律：纯文本、无 emoji、无空洞占位（团队级 P0 规则 1 / 规则 3）。
+-->
+<resources>
+
+    <!-- 通知渠道 -->
+    <string name="kebiao_channel_class_reminder_name">上课提醒</string>
+    <string name="kebiao_channel_class_reminder_desc">课程开始前提醒，包含课程名、时间与教室</string>
+    <string name="kebiao_channel_daily_summary_name">每日早课汇总</string>
+    <string name="kebiao_channel_daily_summary_desc">每天早上汇总当天课程，默认关闭</string>
+
+    <!-- 通知动作 -->
+    <string name="kebiao_action_dismiss">知道了</string>
+    <string name="kebiao_action_snooze">10 分钟后提醒</string>
+
+    <!-- 每日汇总文案：三种"没课"必须可区分 -->
+    <string name="kebiao_summary_title">今天的课程</string>
+    <string name="kebiao_summary_no_class">今天没有课</string>
+    <string name="kebiao_summary_outside_semester">今天在学期之外</string>
+    <string name="kebiao_summary_not_imported">还没有课表，打开 App 去导入</string>
+
+    <!-- 小组件 -->
+    <string name="kebiao_widget_label">课刻 · 今日课程</string>
+    <string name="kebiao_widget_description">显示今天的课程：时间、课程名与地点，或提示今天没有课</string>
+
+    <!-- 通知小图标无障碍描述 -->
+    <string name="kebiao_ic_notification_desc">上课提醒</string>
+
+</resources>

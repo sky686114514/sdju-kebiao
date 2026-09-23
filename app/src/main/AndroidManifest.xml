@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  课刻 Android 清单。
+
+  归属说明：本文件的"平台侧组件"（Application / 广播接收器 / 小组件 / 权限）归后端模块维护；
+  MainActivity 与主题、应用名、启动图标由 UI 模块提供。因此本文件依赖以下**由 UI 模块定义**的资源，
+  它们是两个模块之间的显式契约（缺任意一项会在构建期报 missing resource）：
+    - @string/app_name        应用名「课刻」
+    - @style/Theme.Kebiao     App 主题
+    - @mipmap/ic_launcher     启动图标
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 导入课表需要联网；查看与提醒完全离线（Spec 第 10 节） -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- 上课提醒（API 33+ 需运行时授权；被拒时 App 内必须明示"提醒将无法送达"，AC-32） -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- 精确闹钟（Android 12+ 需用户授权，Android 14+ 默认拒绝；被拒时自动降级，AC-33）。
+         不使用 USE_EXACT_ALARM：那仅限闹钟/日历类应用且受政策约束（ARCHITECTURE 第 8.1 节）。 -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+    <!-- 开机 / 应用更新后重排闹钟（自愈入口一） -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:name=".KebiaoApplication"
+        android:allowBackup="true"
+        android:enableOnBackInvokedCallback="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:supportsRtl="false"
+        android:theme="@style/Theme.Kebiao">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 到点发提醒。exported=false + 显式组件 Intent：课程信息不出本应用 -->
+        <receiver
+            android:name=".reminder.ReminderAlarmReceiver"
+            android:exported="false" />
+
+        <!-- 自愈入口一：重启 / 应用更新 / 改时间 / 改时区 / 跨零点 -->
+        <receiver
+            android:name=".reminder.BootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 自愈入口三：精确闹钟权限状态变化后立即重排 -->
+        <receiver
+            android:name=".reminder.ExactAlarmPermissionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 桌面小组件：单 provider + 可缩放，4x2 与 4x4 共用同一套布局逻辑（D-6） -->
+        <receiver
+            android:name=".widget.KebiaoWidgetReceiver"
+            android:exported="true"
+            android:label="@string/kebiao_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_kebiao" />
+        </receiver>
+    </application>
+
+</manifest>

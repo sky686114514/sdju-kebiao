@@ -1,0 +1,54 @@
+# ---------------------------------------------------------------------------
+# 本仓库的 .gitignore 有两条硬边界，删改前先看这里：
+#
+# 1) .workbuddy/ 是 AI 工作区数据，内含跨项目的服务器密码、真实姓名、学号。
+#    任何情况下不得入库。它不是缓存目录，删掉也不会重建出同样内容。
+# 2) output/ 是抓课表时的临时落盘目录，含教务系统真实截图（PNG）、
+#    带真实姓名的课表 HTML（kebiao.html）与抓取日志（_scratch/*.log）。
+#    这些都是个人隐私数据，整体排除。
+# ---------------------------------------------------------------------------
+
+# ---- 隐私与本地工作区（最高优先级，勿删） ----
+.workbuddy/
+output/
+local.properties
+
+# ---- Gradle / 构建产物 ----
+.gradle/
+.kotlin/
+build/
+app/build/
+*/build/
+.cxx/
+.externalNativeBuild/
+*.apk
+*.aab
+*.ap_
+*.dex
+captures/
+.gradle_project_cachedir/
+
+# ---- 根目录临时构建日志（历次验证留档，非源码） ----
+_*.log
+_*.txt
+_*.json
+!tools/**/*.txt
+
+# ---- IDE ----
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# ---- 系统 ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- 签名与密钥 ----
+*.jks
+*.keystore
+*.jceks
+keystore.properties
+google-services.json

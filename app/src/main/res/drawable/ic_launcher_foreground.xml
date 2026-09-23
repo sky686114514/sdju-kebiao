@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  课刻 · 启动图标前景（自适应图标 foreground）
+
+  形状来源：Material Symbols 的 calendar_today（与 ui/icons 里日历导航图标同源，
+  960 视口、官方 pathData，无自造路径）。这里把字形缩到中心约 42% 并居中，
+  使其落在自适应图标的安全区内（避免被厂商裁成圆形 / 方形 / 水滴时切边）。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+    <group
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:translateX="240"
+        android:translateY="240">
+        <path
+            android:fillColor="@android:color/white"
+            android:pathData="M200,880Q167,880 143.5,856.5Q120,833 120,800L120,240Q120,207 143.5,183.5Q167,160 200,160L240,160L240,80L320,80L320,160L640,160L640,80L720,80L720,160L760,160Q793,160 816.5,183.5Q840,207 840,240L840,800Q840,833 816.5,856.5Q793,880 760,880L200,880ZM200,800L760,800Q760,800 760,800Q760,800 760,800L760,400L200,400L200,800Q200,800 200,800Q200,800 200,800ZM200,320L760,320L760,240Q760,240 760,240Q760,240 760,240L200,240Q200,240 200,240Q200,240 200,240L200,320ZM200,320L200,240Q200,240 200,240Q200,240 200,240L200,240Q200,240 200,240Q200,240 200,240L200,320L200,320Z" />
+    </group>
+</vector>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  网络安全配置（Spec 第 10 节：全链路 HTTPS）。
+
+  纪律：
+    1. cleartextTrafficPermitted=false —— 全应用禁止明文 HTTP，不设任何 domain 例外；
+    2. **不写 trust-anchors 覆盖** —— 默认信任系统 CA 库；
+    3. **禁止 onReceivedSslError { handler.proceed() }**（架构文档第 7.4 节第 6 条，安全红线），
+       因此这里也不做任何"放宽证书校验"的配置。
+
+  若将来确认学校证书链不被系统信任，正确做法是**只对 edu.cn 域追加信任锚**，例如：
+
+      <domain-config>
+          <domain includeSubdomains="true">sdju.edu.cn</domain>
+          <trust-anchors>
+              <certificates src="@raw/sdju_root_ca" />
+              <certificates src="system" />
+          </trust-anchors>
+      </domain-config>
+
+  并且**不得**使用 `<base-config>` 全局放宽，也不得把 cleartext 打开。
+
+  启用前需先添加 res/raw/sdju_root_ca（即 `app/src/main/res/raw/sdju_root_ca` 证书文件），
+  否则 `@raw/sdju_root_ca` 资源引用会直接导致资源合并失败（AAPT: resource not found）。
+
+  该场景尚未实测（OPEN-DECISIONS OD-002 / OD-005），因此本文件当前保持最严格配置。
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

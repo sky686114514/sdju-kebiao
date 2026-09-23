@@ -1,0 +1,414 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "292906f4d02e6f9f4792770f8a14133a",
+    "entities": [
+      {
+        "tableName": "semesters",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `academic_year` TEXT NOT NULL, `term_index` INTEGER NOT NULL, `start_date` TEXT NOT NULL, `total_weeks` INTEGER NOT NULL, `is_current` INTEGER NOT NULL DEFAULT 0, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "academicYear",
+            "columnName": "academic_year",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "termIndex",
+            "columnName": "term_index",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startDate",
+            "columnName": "start_date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalWeeks",
+            "columnName": "total_weeks",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isCurrent",
+            "columnName": "is_current",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "idx_semesters_year_term",
+            "unique": true,
+            "columnNames": [
+              "academic_year",
+              "term_index"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `idx_semesters_year_term` ON `${TABLE_NAME}` (`academic_year`, `term_index`)"
+          }
+        ]
+      },
+      {
+        "tableName": "courses",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `semester_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `code` TEXT, `total_hours` INTEGER, `is_online` INTEGER NOT NULL DEFAULT 0, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, FOREIGN KEY(`semester_id`) REFERENCES `semesters`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "semesterId",
+            "columnName": "semester_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "totalHours",
+            "columnName": "total_hours",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isOnline",
+            "columnName": "is_online",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "idx_courses_semester",
+            "unique": false,
+            "columnNames": [
+              "semester_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `idx_courses_semester` ON `${TABLE_NAME}` (`semester_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "semesters",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "semester_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "class_sessions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `course_id` INTEGER NOT NULL, `weekday` INTEGER, `period_start` INTEGER, `period_end` INTEGER, `start_time` TEXT, `end_time` TEXT, `campus` TEXT, `room` TEXT, `teacher` TEXT, `weeks_raw` TEXT NOT NULL, `week_numbers` TEXT NOT NULL, `source` INTEGER NOT NULL, `import_batch_id` INTEGER, `remark` TEXT, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, FOREIGN KEY(`course_id`) REFERENCES `courses`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`import_batch_id`) REFERENCES `import_batches`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "courseId",
+            "columnName": "course_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weekday",
+            "columnName": "weekday",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "periodStart",
+            "columnName": "period_start",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "periodEnd",
+            "columnName": "period_end",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "startTime",
+            "columnName": "start_time",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "endTime",
+            "columnName": "end_time",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "campus",
+            "columnName": "campus",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "room",
+            "columnName": "room",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "teacher",
+            "columnName": "teacher",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "weeksRaw",
+            "columnName": "weeks_raw",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weekNumbers",
+            "columnName": "week_numbers",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "importBatchId",
+            "columnName": "import_batch_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "remark",
+            "columnName": "remark",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "idx_sessions_course",
+            "unique": false,
+            "columnNames": [
+              "course_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `idx_sessions_course` ON `${TABLE_NAME}` (`course_id`)"
+          },
+          {
+            "name": "idx_sessions_weekday",
+            "unique": false,
+            "columnNames": [
+              "weekday"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `idx_sessions_weekday` ON `${TABLE_NAME}` (`weekday`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "courses",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "course_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "import_batches",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "import_batch_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "import_batches",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `semester_id` INTEGER NOT NULL, `source` INTEGER NOT NULL, `status` INTEGER NOT NULL, `payload_ref` TEXT, `course_count` INTEGER, `session_count` INTEGER, `message` TEXT, `started_at` INTEGER NOT NULL, `finished_at` INTEGER, FOREIGN KEY(`semester_id`) REFERENCES `semesters`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "semesterId",
+            "columnName": "semester_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "payloadRef",
+            "columnName": "payload_ref",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "courseCount",
+            "columnName": "course_count",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "sessionCount",
+            "columnName": "session_count",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "message",
+            "columnName": "message",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "startedAt",
+            "columnName": "started_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "finishedAt",
+            "columnName": "finished_at",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "idx_batches_semester",
+            "unique": false,
+            "columnNames": [
+              "semester_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `idx_batches_semester` ON `${TABLE_NAME}` (`semester_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "semesters",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "semester_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '292906f4d02e6f9f4792770f8a14133a')"
+    ]
+  }
+}

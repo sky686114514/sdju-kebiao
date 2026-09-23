@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  课刻 · 深色下的 App 主题覆盖（values-night）
+
+  只覆盖「系统栏图标要变浅」这一项：平台主题 parent 已由 values/themes.xml 给出，
+  颜色仍指向 @color/kebiao_window_background（values-night 下会自动取深色值）。
+-->
+<resources>
+
+    <style name="Theme.Kebiao" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/kebiao_window_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!-- 深色主题下系统栏图标用浅色 -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+
+</resources>

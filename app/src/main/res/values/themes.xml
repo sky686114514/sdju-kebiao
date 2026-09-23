@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  课刻 · App 主题（UI 模块提供，AndroidManifest 依赖 @style/Theme.Kebiao）
+
+  刻意继承平台主题而不是 Theme.Material3.*：本项目**不依赖 Material Components
+  for Android（com.google.android.material）**，全部 UI 由 Compose 绘制。
+  引入 XML 侧的 Material 主题会白白多一条依赖，并与 Compose 主题形成两个真相源。
+
+  这里只负责「Compose 首帧之前」的平台侧表现：
+    - 窗口背景（防启动闪白，与 Color.kt 的 background 同值）
+    - 系统栏透明（配合 MainActivity 的 enableEdgeToEdge()）
+  Compose 侧的颜色 / 字体 / 圆角全部由 KebiaoTheme 提供，本文件不重复定义。
+-->
+<resources>
+
+    <style name="Theme.Kebiao" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/kebiao_window_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!-- 浅色主题下系统栏图标用深色，保证状态栏文字可读 -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+
+</resources>

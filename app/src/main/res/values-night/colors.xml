@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  课刻 · 深色下的 XML 层 Token（values-night）
+
+  与 ui/theme/Color.kt 的 KebiaoColorScheme.Dark 对齐（background = #0E1116）。
+  深色底刻意不用纯黑：纯黑 OLED 会造成滚动拖影，且与 Material 3 的层级表达相悖。
+-->
+<resources>
+    <color name="kebiao_window_background">#0E1116</color>
+</resources>

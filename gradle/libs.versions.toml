@@ -1,0 +1,74 @@
+[versions]
+# 版本来源：docs/Spec.md 第 4.2 节「技术栈版本锁定表」（19/19 项已由项目总监独立核验存在性）。
+#
+# 纪律（ARCHITECTURE.md 第 4.2 节）：本文件只允许出现锁定表锚定过的版本。
+# 锁定表未锚定的项（kotlinx-coroutines、androidx.test.*、compose ui-test、
+# core-splashscreen、material3-adaptive）一律不在此填写，留待首次构建时由依赖解析确认。
+# 少数必须显式声明的构建期依赖（JUnit、desugar_jdk_libs）写在 app/build.gradle.kts 中，
+# 并已就地标注「未锚定、构建时核验」。
+agp = "9.3.3"
+kotlin = "2.4.20"
+ksp = "2.3.11"
+composeBom = "2026.09.00"
+room = "2.8.5"
+datastore = "1.2.1"
+navigationCompose = "2.10.1"
+# 锚定来源：navigation-compose 2.10.1 -> navigationevent-compose 1.1.2 -> navigationevent 1.1.2。
+# 选 1.1.2 不是随手挑的：navigationevent-compose-1.1.2 的 .module 里有一条
+# dependencyConstraints，reason 是 "navigationevent-compose is in atomic group
+# androidx.navigationevent"，强制要求同组的 navigationevent 也是 1.1.2。
+# 若这里写 1.0.0，会与原子组约束冲突导致解析失败或版本抬高。
+navigationEvent = "1.1.2"
+lifecycle = "2.11.0"
+activityCompose = "1.13.0"
+androidxCore = "1.19.0"
+workManager = "2.11.2"
+glance = "1.2.0"
+okhttp = "5.5.0"
+jsoup = "1.23.2"
+kotlinxSerialization = "1.11.0"
+
+[libraries]
+# AndroidX Core 1.19.0 起 core-ktx 已并入 core，因此直接依赖 androidx.core:core
+# （Spec 第 11 节内嵌已知坑：写 core-ktx 会解析为空兼容包）。
+androidx-core = { module = "androidx.core:core", version.ref = "androidxCore" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+# 显式依赖而非依赖传递：predictive back 要读 NavigationEvent.EDGE_LEFT/RIGHT 判断起手边缘，
+# 靠传递依赖能编译属于侥幸，版本漂移会静默失效。groupId 是 androidx.navigationevent（不是 androidx.navigation）。
+androidx-navigationevent = { module = "androidx.navigationevent:navigationevent", version.ref = "navigationEvent" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workManager" }
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }
+androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glance" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+# Compose 一族由 BOM 统一版本（BOM 2026.09.00 -> Compose 1.12.1 + Material3 1.4.0），
+# 故此处刻意不写 version（写死版本会与 BOM 打架）。
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-foundation = { module = "androidx.compose.foundation:foundation" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+# 刻意不声明 org.jetbrains.kotlin.android：AGP 9.0 起内置 Kotlin，
+# 应用该插件会被 AGP 直接拒绝（构建失败）。此条不得再加回。
+# Compose 编译器自 Kotlin 2.0 起并入 KGP。禁止使用已废弃的
+# composeOptions.kotlinCompilerExtensionVersion（Spec 第 11 节内嵌已知坑）。
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+# 必须 KSP2（2.3.11）：KSP1 与 Kotlin >= 2.3 / AGP >= 9 不兼容（Spec 第 11 节）。
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

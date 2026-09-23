@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  小组件 Provider 信息。
+
+  尺寸策略（总监裁决 D-6）：4x2 为主 + 同版本内支持 4x4。
+  实现方式：**单一 provider + 双向可缩放**，而不是两个 provider 两套布局 ——
+  后者会产生"两套 UI 代码、两种更新时机、两种渲染差异"的长期维护成本
+  （ARCHITECTURE.md 第 9.1 节对 RemoteViews 方案的批评同样适用于双 provider）。
+  实际可见行数由 KebiaoWidget 按 LocalSize 自适应。
+
+  targetCellWidth/Height 与 minWidth/minHeight 都是 API 31+ 的属性，
+  低版本由 minWidth/minHeight 生效（minSdk 26）。
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/kebiao_widget_description"
+    android:minHeight="110dp"
+    android:minWidth="250dp"
+    android:previewImage="@mipmap/ic_launcher"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellHeight="2"
+    android:targetCellWidth="4"
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen" />

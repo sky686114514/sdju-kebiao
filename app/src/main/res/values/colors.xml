@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  课刻 · XML 层颜色 Token（唯一允许出现字面色值的资源文件之一）
+
+  只服务一件事：Compose 首帧之前的那一瞬窗口背景与系统栏配色，
+  值必须与 ui/theme/Color.kt 的 KebiaoColorScheme 保持一致
+  （Light.background = #F4F6FA / Dark.background = #0E1116），
+  否则冷启动会先闪一下白底再切到 Compose 背景。
+-->
+<resources>
+    <!-- 启动窗口背景：与 Compose Light 的 background 同值，避免启动闪白 -->
+    <color name="kebiao_window_background">#F4F6FA</color>
+
+    <!-- 启动图标底色：与 Compose Light 的 primary（电控蓝，色相 216）同值 -->
+    <color name="ic_launcher_background">#1D6FE8</color>
+</resources>

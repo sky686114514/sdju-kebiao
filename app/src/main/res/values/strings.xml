@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  课刻 · 应用名字符串（UI 模块）
+
+  为什么单独一个文件而不是并入后端模块的 values/strings_kebiao_backend.xml：
+  那是后端（提醒 / 小组件）的文件，两个模块各写各的，避免并行开发时互相覆盖。
+
+  AndroidManifest 的 android:label="@string/app_name" 依赖本文件 ——
+  这是 UI 模块与清单之间的显式契约，缺它会在构建期报 missing resource。
+-->
+<resources>
+    <string name="app_name">课刻</string>
+</resources>

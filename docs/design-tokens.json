@@ -1,0 +1,528 @@
+{
+  "meta": {
+    "product": "课表 App（上海电机学院教务数据导入）",
+    "owner": "课刻项目（自用个人项目）",
+    "designer": "颜好看",
+    "phase": "Phase 1 设计调研与方向定义",
+    "platform": "android",
+    "uiStack": "Kotlin + Jetpack Compose + Material 3（由架构师 Spec 锁定）",
+    "register": "product",
+    "dials": {
+      "designVariance": 5,
+      "motionIntensity": 7,
+      "visualDensity": 5,
+      "note": "motionIntensity 偏高是用户显式要求（界面美观现代 + 过渡动画），但只投在功能性动效上，不做装饰性编排"
+    },
+    "iconLibrary": {
+      "name": "Material Symbols",
+      "license": "Apache 2.0",
+      "defaultAxis": "Outlined + FILL=0 + wght=400 + opsz=24",
+      "activeAxis": "Filled + FILL=1 + wght=400 + opsz=24",
+      "grid": 24,
+      "visualStroke": "等效 2dp @ 24dp 网格（字形固有线宽，不做自定义加粗）"
+    },
+    "themeStrategy": "浅色 + 深色两套，默认跟随系统。深色以亮度递进表达层级，不使用投影。",
+    "benchmarks": ["Linear", "Notion Calendar", "Things 3", "Apple Calendar", "TimeTree"],
+    "referenceSources": [
+      "references/design-systems/token-standard.md（四层 Token 规范 + 5 态标准 + 动效精规）",
+      "references/design-systems/color-palettes.md（Restrained 策略、对比度校验基线）",
+      "references/design-systems/typography-pairings.md（中文场景强制叠加 Noto Sans SC 的降级思路）",
+      "references/design-systems/ui-styles-library.md（风格决策树 + 移动端专属风格第 29/30 号）",
+      "references/design-systems/design-commands.md（寄存器判断 + Android Material 3 精要 + 禁 bounce 缓动）",
+      "references/industries/content-platform.md（信息流骨架 + 空状态不可忽略 + 禁 emoji 图标）"
+    ]
+  },
+
+  "color": {
+    "primitive": {
+      "blueAccent50": "#E7F0FE",
+      "blueAccent100": "#D6E6FD",
+      "blueAccent200": "#A9CBFB",
+      "blueAccent400": "#4E92F2",
+      "blueAccent500": "#1D6FE8",
+      "blueAccent600": "#1A66D5",
+      "blueAccent700": "#175CBF",
+      "blueAccent800": "#0B3B85",
+      "blueAccent900": "#062654",
+      "neutralLight": ["#F4F6FA", "#FFFFFF", "#EDF0F6", "#E6EBF5", "#E2E6EE", "#EFF2F7"],
+      "neutralDark": ["#0E1116", "#161A21", "#1C2129", "#242A34", "#2A313C", "#1E232B"],
+      "inkLight": ["#171A21", "#59616E", "#7C8695"],
+      "inkDark": ["#E8EBF1", "#A2ABB8", "#6E7887"]
+    },
+
+    "semanticLight": {
+      "bg": "#F4F6FA",
+      "surface": "#FFFFFF",
+      "surfaceContainer": "#EDF0F6",
+      "surfaceContainerHigh": "#E6EBF5",
+
+      "fg": "#171A21",
+      "fg2": "#2C313A",
+      "muted": "#59616E",
+      "meta": "#7C8695",
+      "metaUsage": "仅用于装饰性元数据与图标，不承载关键文本。需要 4.5:1 时改用 muted。",
+
+      "border": "#E2E6EE",
+      "borderSoft": "#EFF2F7",
+
+      "accent": "#1D6FE8",
+      "accentOn": "#FFFFFF",
+      "accentHover": "#1A66D5",
+      "accentActive": "#175CBF",
+      "accentContainer": "#D6E6FD",
+      "onAccentContainer": "#0B3B85",
+      "accentTint": "#E7F0FE",
+
+      "success": "#14855A",
+      "successContainer": "#DCF2E8",
+      "warn": "#A16207",
+      "warnContainer": "#FBEEDA",
+      "danger": "#C62828",
+      "dangerContainer": "#FBE3E2",
+      "info": "#1D6FE8",
+      "infoContainer": "#E7F0FE",
+
+      "focusRing": "rgba(29,111,232,0.32)",
+      "scrim": "rgba(12,18,28,0.44)",
+      "skeletonBase": "#E6EBF5",
+      "skeletonHighlight": "#F3F6FB"
+    },
+
+    "semanticDark": {
+      "bg": "#0E1116",
+      "surface": "#161A21",
+      "surfaceContainer": "#1C2129",
+      "surfaceContainerHigh": "#242A34",
+
+      "fg": "#E8EBF1",
+      "fg2": "#C7CDD8",
+      "muted": "#A2ABB8",
+      "meta": "#6E7887",
+      "metaUsage": "仅用于装饰性元数据与图标，不承载关键文本。",
+
+      "border": "#2A313C",
+      "borderSoft": "rgba(255,255,255,0.06)",
+
+      "accent": "#6FA8FF",
+      "accentOn": "#06152B",
+      "accentHover": "#8ABAFF",
+      "accentActive": "#A9CBFB",
+      "accentContainer": "#1D3050",
+      "onAccentContainer": "#C9DEFF",
+      "accentTint": "#16243A",
+
+      "success": "#4CC38A",
+      "successContainer": "#14301F",
+      "warn": "#E0A63C",
+      "warnContainer": "#33260C",
+      "danger": "#F2706A",
+      "dangerContainer": "#3A1A19",
+      "info": "#6FA8FF",
+      "infoContainer": "#16243A",
+
+      "focusRing": "rgba(111,168,255,0.38)",
+      "scrim": "rgba(0,0,0,0.60)",
+      "skeletonBase": "#242A34",
+      "skeletonHighlight": "#2F3742"
+    },
+
+    "courseLight": [
+      { "id": "course1", "name": "蓝", "hue": 216, "value": "#1F63D6", "tint": "#E8EFFC" },
+      { "id": "course2", "name": "青", "hue": 188, "value": "#0B7C8C", "tint": "#E2F1F3" },
+      { "id": "course3", "name": "绿", "hue": 152, "value": "#0F7A48", "tint": "#E2F2EA" },
+      { "id": "course4", "name": "橄榄", "hue": 72, "value": "#6B7A0F", "tint": "#EEF1DF" },
+      { "id": "course5", "name": "琥珀", "hue": 38, "value": "#9A6206", "tint": "#F8EEDD" },
+      { "id": "course6", "name": "橙红", "hue": 18, "value": "#B94A1A", "tint": "#FAE9E1" },
+      { "id": "course7", "name": "品红", "hue": 330, "value": "#AE3A78", "tint": "#F9E6F0" },
+      { "id": "course8", "name": "紫", "hue": 268, "value": "#6E4FD8", "tint": "#EEEAFB" }
+    ],
+
+    "courseDark": [
+      { "id": "course1", "name": "蓝", "hue": 216, "value": "#7CA6FF", "tint": "#182742" },
+      { "id": "course2", "name": "青", "hue": 188, "value": "#4FC0D0", "tint": "#122C2F" },
+      { "id": "course3", "name": "绿", "hue": 152, "value": "#59C48E", "tint": "#142E22" },
+      { "id": "course4", "name": "橄榄", "hue": 72, "value": "#B3C24D", "tint": "#272B17" },
+      { "id": "course5", "name": "琥珀", "hue": 38, "value": "#E2B055", "tint": "#332617" },
+      { "id": "course6", "name": "橙红", "hue": 18, "value": "#F0885A", "tint": "#37211A" },
+      { "id": "course7", "name": "品红", "hue": 330, "value": "#F085BC", "tint": "#37202C" },
+      { "id": "course8", "name": "紫", "hue": 268, "value": "#A88CFA", "tint": "#292444" }
+    ],
+
+    "courseRules": {
+      "assignment": "以课程代码（如 053017P1-15）做稳定哈希取模 8，同一门课在全 App 与 Widget 永远同一色，不随时间或视图变化。",
+      "contrast": "浅色 8 色对 #FFFFFF 全部 >= 4.5:1（已逐色校验），可直接作课程名文字色；深色 8 色对 #161A21 全部 >= 6.4:1。",
+      "rainbowGuard": "8 色共享相近明度与中等彩度，只变色相且色相分离（216/188/152/72/38/18/330/268）。课程色只出现在 8dp 圆点与 10% 面积的低饱和 tint 底上，绝不整格高饱和大色块铺满。",
+      "accessibility": "状态不只靠颜色传达：进行中同时有边框色 + 状态 pill + 脉冲圆环三重编码；本周不上同时有降到 55% 不透明度 + 虚线边框 + 文字标签。"
+    }
+  },
+
+  "font": {
+    "families": {
+      "display": {
+        "value": "system-ui (FontFamily.Default)",
+        "note": "中文走系统字体（小米 MiSans / 华为 HarmonyOS Sans / OPPO Sans / vivo Sans / Noto Sans CJK SC）。不打包中文字体文件，中文字体子集化后仍 1MB+，对课表 App 是纯浪费且破坏系统一致性。"
+      },
+      "body": {
+        "value": "system-ui (FontFamily.Default)",
+        "note": "正文与中文标题同族，靠字重与字号建立层级。"
+      },
+      "numeric": {
+        "value": "Inter (latin subset, variable) -> FontFamily.Monospace -> FontFamily.Default",
+        "note": "只用于时间、节次、教室编号、学时数字。打包拉丁子集约 30KB，开启 tnum 等宽数字使 08:10 / 10:00 / 12:30 竖向对齐。中文不进入该字体栈。"
+      }
+    },
+    "fallbackChain": [
+      "1. 数字与拉丁：Inter variable (latin-subset, tnum on)",
+      "2. 若 Inter 未打包：FontFamily.Monospace（Roboto Mono / Droid Sans Mono）",
+      "3. 若等宽不可用：FontFamily.Default",
+      "4. 中文始终由 FontFamily.Default 承载，交给系统 Noto Sans CJK / 厂商字体",
+      "5. 系统字号缩放（Android Font Scale）必须生效，所有字号用 sp 不用 dp"
+    ],
+    "scale": {
+      "display": { "sizeSp": 32, "lineHeightSp": 40, "tracking": "-0.02em", "weight": 590 },
+      "titleLg": { "sizeSp": 22, "lineHeightSp": 28, "tracking": "-0.01em", "weight": 590 },
+      "titleMd": { "sizeSp": 18, "lineHeightSp": 24, "tracking": "-0.005em", "weight": 590 },
+      "titleSm": { "sizeSp": 16, "lineHeightSp": 22, "tracking": "0", "weight": 510 },
+      "body": { "sizeSp": 16, "lineHeightSp": 24, "tracking": "0", "weight": 400 },
+      "bodySm": { "sizeSp": 14, "lineHeightSp": 20, "tracking": "0", "weight": 400 },
+      "label": { "sizeSp": 13, "lineHeightSp": 18, "tracking": "0.01em", "weight": 510 },
+      "caption": { "sizeSp": 12, "lineHeightSp": 16, "tracking": "0.02em", "weight": 400 },
+      "overline": { "sizeSp": 11, "lineHeightSp": 14, "tracking": "0.08em", "weight": 590, "note": "仅用于 Widget 内的 TODAY 标签与全大写场景，主 App 不用" }
+    },
+    "weightMapping": {
+      "read": { "intent": 400, "landed": 400 },
+      "emphasize": { "intent": 510, "landed": 500, "note": "系统字体只有离散档，510 snap 到 500" },
+      "announce": { "intent": 590, "landed": 600, "note": "590 snap 到 SemiBold 600" }
+    },
+    "darkModeCompensation": {
+      "lineHeightDelta": "次级文字行高 +0.05（20sp -> 21sp）",
+      "trackingDelta": "+0.01em",
+      "weightDelta": "次级与元数据文字由 400 升到 500（暗底感知更轻）",
+      "note": "正文 16sp 保持 24sp 行高不变，避免暗色文字过度松散。"
+    }
+  },
+
+  "space": {
+    "0": "0dp",
+    "1": "4dp",
+    "2": "8dp",
+    "3": "12dp",
+    "4": "16dp",
+    "5": "20dp",
+    "6": "24dp",
+    "8": "32dp",
+    "10": "40dp",
+    "12": "48dp",
+    "16": "64dp",
+    "grid": "4dp 基准网格。禁用 5 / 7 / 13 / 15 / 22 / 30 等非标值。",
+    "roles": {
+      "screenGutter": "20dp（手机左右安全边距）",
+      "cardPadding": "16dp",
+      "cardGap": "12dp（今日课程卡片纵向间距）",
+      "inlineIconGap": "4dp（图标与同行文字）",
+      "blockGap": "24dp（区块之间）",
+      "sectionGap": "32dp（主界面大分区）",
+      "touchTarget": "48dp 最小（Material 3 标准），图标按钮视觉 24dp 时用 12dp 内边距补足命中区"
+    }
+  },
+
+  "radius": {
+    "sm": "8dp",
+    "md": "12dp",
+    "lg": "16dp",
+    "xl": "20dp",
+    "pill": "999dp",
+    "avatar": "999dp",
+    "usage": {
+      "sm": "chip、状态标签、小色点容器",
+      "md": "课程卡片、输入框、周视图网格单元、按钮",
+      "lg": "底部弹窗顶部、分组容器",
+      "xl": "对话框",
+      "pill": "进行中状态 pill、FAB、进度条、周次切换器"
+    },
+    "note": "卡片圆角上限 16dp。>=24dp 属过度圆滑（AI 特征），禁用。"
+  },
+
+  "elevation": {
+    "flat": "none",
+    "ring": "0 0 0 1dp var(--border)",
+    "raised": "浅色 0 1dp 2dp rgba(16,24,40,0.05) + 0 4dp 8dp rgba(16,24,40,0.06)；深色 0 0 0 1dp rgba(255,255,255,0.06)",
+    "overlay": "浅色 0 8dp 24dp rgba(16,24,40,0.12)；深色 0 8dp 24dp rgba(0,0,0,0.40)",
+    "zIndex": { "base": 0, "sticky": 10, "dropdown": 100, "sheet": 200, "dialog": 300, "toast": 400 },
+    "rules": {
+      "hairlineFirst": "1dp 边框优先于阴影。默认卡片无阴影，靠边框与底色差分层。",
+      "noGhostCard": "同一元素不同时使用 1dp 边框与 >=16dp 模糊阴影（幽灵卡片）。overlay 层级只用阴影不加边框。",
+      "blurGlass": "不做装饰性毛玻璃。仅 TopAppBar 滚动滚过内容时使用 1 处功能性模糊（blur 12dp，非装饰）。",
+      "darkMode": "深色主题用 surface -> surfaceContainer -> surfaceContainerHigh 的亮度递进表达层级，不靠阴影。"
+    }
+  },
+
+  "motion": {
+    "durationMs": {
+      "instant": 100,
+      "fast": 150,
+      "medium": 250,
+      "slow": 350,
+      "longer": 500
+    },
+    "easing": {
+      "standard": [0.2, 0.0, 0.0, 1.0],
+      "emphasized": [0.05, 0.7, 0.1, 1.0],
+      "decelerate": [0.0, 0.0, 0.2, 1.0],
+      "accelerate": [0.3, 0.0, 1.0, 1.0],
+      "note": "全项目禁用过冲型（overshoot）缓动：三次贝塞尔控制点 y 值超出 0 到 1 区间的曲线，以及任何 elastic 曲线。"
+    },
+    "spring": {
+      "snappy": { "dampingRatio": 1.0, "stiffness": 1500, "use": "点按反馈、chip 选中" },
+      "spatial": { "dampingRatio": 1.0, "stiffness": 400, "use": "容器高度变化、列表重排" },
+      "gentle": { "dampingRatio": 1.0, "stiffness": 200, "use": "卡片高度展开折叠" },
+      "note": "全部 dampingRatio = 1.0（NoBouncy），数学上不存在回弹。禁止使用 DampingRatioMediumBouncy(0.5) 与 HighBouncy(0.2)。"
+    },
+    "globalRules": {
+      "maxConcurrentAnimatedElements": 3,
+      "forbidAnimateProperties": ["width", "height", "top", "left", "margin", "padding"],
+      "preferAnimateProperties": ["alpha", "translationX", "translationY", "scaleX", "scaleY", "rotationZ"],
+      "scrollBudget": "列表滚动期间必须 0 个动画在运行。入场动画只在首屏静止时播一次，用 rememberSaveable 标记，滚动回看不再重播。",
+      "reducedMotion": "读取 LocalMotionDurationScale。scale = 0 时：关闭 stagger 与脉冲；进退场直接到终态；仅保留 <=100ms 的颜色过渡。",
+      "lowRamFallback": "ActivityManager.isLowRamDevice() 为真时：关闭脉冲、关闭 stagger、spring 全部替换为 tween(200, decelerate)。",
+      "frameBudget": "60Hz 单帧 16.6ms / 120Hz 单帧 8.3ms。所有动画走 graphicsLayer，不触发重组与重新布局。"
+    },
+
+    "recipes": {
+      "pageSwitchSameLevel": {
+        "scene": "底部导航同级页面切换：今日课程 / 周视图 / 设置",
+        "api": "NavHost + AnimatedContent",
+        "enter": "fadeIn(tween(210, decelerate)) + scaleIn(tween(210, decelerate), initialScale = 0.94f)",
+        "exit": "fadeOut(tween(90, accelerate))",
+        "sizeTransform": "null",
+        "note": "Material 3 fade-through。同级页面不做水平位移，避免方向误读。"
+      },
+      "pageSwitchHierarchy": {
+        "scene": "层级页面推入：昨日课程详情 / 单门课程详情 / 学期管理 / 设置子页",
+        "api": "AnimatedContent (shared-axis X)",
+        "enter": "slideInHorizontally(tween(300, emphasized), initialOffsetX = { it / 4 }) + fadeIn(tween(300, decelerate))",
+        "exit": "slideOutHorizontally(tween(300, emphasized), targetOffsetX = { -it / 6 }) + fadeOut(tween(300, accelerate))",
+        "reverse": "返回时 enter / exit 互换，offset 符号取反",
+        "predictiveBack": "Android 14+ 预测性返回手势需与 initialOffsetX 的进度关联，不用固定 300ms 硬播"
+      },
+      "semesterSwitch": {
+        "scene": "切换学期后当天课程列表整体刷新（本 App 最重要的编排）",
+        "totalBudgetMs": 500,
+        "steps": [
+          { "atMs": 0, "target": "旧课程列表", "anim": "fadeOut(tween(140, accelerate)) + slideOutVertically(tween(140, accelerate), targetOffsetY = { -it / 24 })" },
+          { "atMs": 100, "target": "学期名称 Chip", "anim": "AnimatedContent 竖向翻页：slideInVertically(initialOffsetY = { it }) + fadeIn，两者 tween(150, decelerate)" },
+          { "atMs": 140, "target": "列表容器", "anim": "animateContentSize(spring(spatial))" },
+          { "atMs": 140, "target": "新课程列表", "anim": "stagger 入场，见 listItemEntrance" }
+        ],
+        "skeletonPath": "若切换触发网络刷新：先显示 3 个骨架卡（shimmer 见 skeletonShimmer），数据到达后 Crossfade(tween(200, decelerate)) 切到真实内容，再做 stagger",
+        "staleCache": "若本地已有该学期缓存：跳过骨架，直接走 500ms 编排"
+      },
+      "listItemEntrance": {
+        "scene": "今日课程卡片逐个出现（stagger）",
+        "perItem": "fadeIn(tween(180, decelerate)) + slideInVertically(tween(180, decelerate), initialOffsetY = { it / 6 })",
+        "staggerDelayMs": 60,
+        "staggerCap": 6,
+        "delayFormula": "delayMillis = index.coerceAtMost(staggerCap) * staggerDelayMs",
+        "overlapCheck": "180ms 时长 / 60ms 间隔 = 最多 3 张卡同时动画，满足 maxConcurrentAnimatedElements",
+        "capReason": "12 项课表若不封顶，最后一张要等到 720ms 才出现在容忍线之外",
+        "playOnce": "用 rememberSaveable 记录已播，滚动回看不重播"
+      },
+      "weekGridSwitch": {
+        "scene": "周视图切换周次后的网格内容更新",
+        "anim": "整块 Crossfade(tween(180, decelerate))",
+        "stagger": "禁用。网格单元 30+ 个，stagger 会糊成噪点。"
+      },
+      "statusToInProgress": {
+        "scene": "某门课从即将开始变为正在进行中（每天发生的情感时刻，全屏仅允许 1 门）",
+        "detector": "LaunchedEffect + 对齐到下一分钟 tick（delay 到 (60 - now.second) * 1000），不用长轮询",
+        "cardBorder": "animateColorAsState(tween(300, standard))，边框色 border -> accent，边框宽 1dp -> 1.5dp",
+        "cardBackground": "animateColorAsState(tween(300, standard))，底色 surface -> accentTint",
+        "statusPill": "AnimatedVisibility(enter = fadeIn(tween(200, decelerate), delayMillis = 100) + expandHorizontally(tween(200, emphasized)))",
+        "pulseRing": "rememberInfiniteTransition + animateFloat(0.6f <-> 1.0f, infiniteRepeatable(tween(1600, standard), Reverse))，作用于外扩圆环的 scale(1.0 -> 1.35) 与 alpha(0.35 -> 0.0)",
+        "lifecycle": "仅在卡片可见且 App 处于 RESUMED 时运行脉冲；不可见立即停止，阻止后台耗电",
+        "singleInstance": "状态提升到列表层，保证同时只有 1 门课处于 inProgress"
+      },
+      "statusToUpcoming": {
+        "scene": "距上课 15 分钟内的低强度预告",
+        "anim": "时间行图标 Schedule -> Alarm，文字色 muted -> fg，animateColorAsState(tween(200, standard))",
+        "noPulse": "不脉冲，不改变卡片边框，避免与进行中抢注意力"
+      },
+      "emptyStateTransition": {
+        "scene": "从有课到今天没课（以及反向）",
+        "outMs": 160,
+        "outAnim": "fadeOut(tween(160, accelerate)) + 容器高度收拢",
+        "inAnim": "图标 scaleIn(tween(260, emphasized), initialScale = 0.88f) + 文案 slideInVertically(tween(260, decelerate), initialOffsetY = { it / 8 }) + fadeIn(tween(260, decelerate), delayMillis = 160)",
+        "totalMs": 420,
+        "reverse": "没课 -> 有课时反向播放，入场 150ms，内容 220ms"
+      },
+      "pullToRefresh": {
+        "scene": "下拉更新课表",
+        "api": "Material 3 PullToRefreshBox",
+        "indicator": "CircularProgressIndicator，containerColor = surfaceContainerHigh，color = accent",
+        "duringRefresh": "不加额外动画，M3 自带",
+        "afterRefreshWithDiff": "差异项 animateItem(placementSpec = spring(spatial))，新出现项 fadeIn(tween(180)) + scaleIn(tween(180), initialScale = 0.96f)",
+        "afterRefreshNoDiff": "顶部 fadeIn(tween(200)) 的已是最新提示，1600ms 后 fadeOut(tween(200))",
+        "budgetMs": 400,
+        "neverBlockScroll": true
+      },
+      "weekPagerSwipe": {
+        "scene": "周视图横向切换周次",
+        "api": "HorizontalPager + PageSize.Fill",
+        "fling": "flingBehavior = PagerDefaults.flingBehavior(state, pagerSnapDistance = PagerSnapDistance.atMost(1))，禁止跨多周飞甩",
+        "drag": "跟手，1:1 无额外动画参数",
+        "onSettle": "ContentTransform 完成后网格 fadeIn(tween(160, decelerate))，避免数据重算时的白屏闪",
+        "backToThisWeek": "AnimatedVisibility(enter = scaleIn(tween(200, emphasized), initialScale = 0.8f) + fadeIn(tween(200, decelerate)), exit = scaleIn(tween(120, accelerate), targetScale = 0.8f) + fadeOut(tween(120, accelerate)))",
+        "snapBack": "spring(dampingRatio = 1.0, stiffness = 400)，NoBouncy 是硬要求"
+      },
+      "skeletonShimmer": {
+        "scene": "首屏与学期切换的加载占位",
+        "base": "skeletonBase",
+        "highlight": "skeletonHighlight",
+        "anim": "rememberInfiniteTransition + animateFloat(-1f -> 2f, infiniteRepeatable(tween(1200, linear), Restart))，作用于 24% 宽度高光带的 translationX",
+        "shape": "3 张骨架卡，高度与真实课程卡一致（112dp），防 CLS",
+        "stopCondition": "数据到达即销毁 transition"
+      },
+      "fabAndSheet": {
+        "scene": "周视图底部 FAB 回到本周 / 导入课表 BottomSheet",
+        "sheetEnter": "slideInVertically(tween(300, emphasized), initialOffsetY = { it })",
+        "sheetExit": "slideOutVertically(tween(200, accelerate), targetOffsetY = { it })",
+        "scrim": "animateFloatAsState(tween(300, standard)) 作用于 scrim alpha",
+        "sheetRadius": "lg 16dp 顶部两角"
+      }
+    }
+  },
+
+  "icon": {
+    "library": "Material Symbols",
+    "axis": {
+      "default": "FILL 0 / wght 400 / GRAD 0 / opsz 24",
+      "selected": "FILL 1 / wght 400 / GRAD 0 / opsz 24",
+      "note": "FILL 轴是选中态的唯一区分手段，不用换图标也不用换颜色"
+    },
+    "sizes": {
+      "inline": "16dp：与文字同一行的小标识（时间行前的 Clock、教室前的 LocationOn、卡片内 chip 图标）",
+      "compact": "20dp：紧凑行内控件（列表项尾随的 ChevronRight、Badge 内图标、Chip 前置图标）",
+      "standard": "24dp：图标按钮、NavigationBar item、TopAppBar action、空状态主图、FAB 内图标（Material 3 标准）"
+    },
+    "stroke": "字形固有线宽，24dp 网格下等效 2dp。不做自定义加粗或描边宽度调整。三种尺寸等比例缩放（16dp 约 1.33dp、20dp 约 1.67dp 等效线宽）。",
+    "rules": [
+      "全项目只此一套，禁止与任何其他图标库混用。",
+      "禁止 emoji 作为功能图标。",
+      "图标与文字同行时垂直基线对齐，不靠视觉估。",
+      "contentDescription 必须写业务语义（如 上课地点 B103），装饰性图标传 null 并在父节点给语义。"
+    ],
+    "inventory": {
+      "navigation": [
+        { "concept": "主界面 今日课程", "symbol": "calendar_today" },
+        { "concept": "周视图", "symbol": "calendar_view_week" },
+        { "concept": "设置", "symbol": "settings" },
+        { "concept": "返回", "symbol": "arrow_back" },
+        { "concept": "更多", "symbol": "more_vert" },
+        { "concept": "列表项进入", "symbol": "chevron_right" }
+      ],
+      "courseCard": [
+        { "concept": "节次 时间", "symbol": "schedule" },
+        { "concept": "上课地点 教室", "symbol": "location_on" },
+        { "concept": "教学楼", "symbol": "meeting_room" },
+        { "concept": "任课教师", "symbol": "person" },
+        { "concept": "学院 专业", "symbol": "school" },
+        { "concept": "学时", "symbol": "timelapse" },
+        { "concept": "课程代码", "symbol": "tag" },
+        { "concept": "纯线上课", "symbol": "wifi" },
+        { "concept": "时间地点待定", "symbol": "help" },
+        { "concept": "单双周", "symbol": "event_repeat" }
+      ],
+      "status": [
+        { "concept": "已结束", "symbol": "check_circle" },
+        { "concept": "正在进行中", "symbol": "radio_button_checked" },
+        { "concept": "即将开始", "symbol": "upcoming" },
+        { "concept": "今天没课", "symbol": "event_busy" },
+        { "concept": "本周不上", "symbol": "event_available" },
+        { "concept": "与当前时间冲突", "symbol": "warning" }
+      ],
+      "action": [
+        { "concept": "更新课表", "symbol": "refresh" },
+        { "concept": "切换学期", "symbol": "swap_vert" },
+        { "concept": "导入课表", "symbol": "file_download" },
+        { "concept": "导出课表", "symbol": "file_upload" },
+        { "concept": "新建 添加", "symbol": "add" },
+        { "concept": "编辑课程", "symbol": "edit" },
+        { "concept": "删除课程", "symbol": "delete" },
+        { "concept": "搜索课程", "symbol": "search" },
+        { "concept": "筛选", "symbol": "filter_list" },
+        { "concept": "分享课表", "symbol": "share" },
+        { "concept": "关闭", "symbol": "close" },
+        { "concept": "展开", "symbol": "expand_more" },
+        { "concept": "收起", "symbol": "expand_less" }
+      ],
+      "reminder": [
+        { "concept": "上课提醒", "symbol": "notifications_active" },
+        { "concept": "提醒已关闭", "symbol": "notifications_off" },
+        { "concept": "提醒时间提前量", "symbol": "alarm" },
+        { "concept": "小组件", "symbol": "widgets" }
+      ],
+      "time": [
+        { "concept": "上一周", "symbol": "chevron_left" },
+        { "concept": "下一周", "symbol": "chevron_right" },
+        { "concept": "学期列表 历史", "symbol": "history" },
+        { "concept": "学期起止", "symbol": "date_range" },
+        { "concept": "今天", "symbol": "today" }
+      ],
+      "emptyAndError": [
+        { "concept": "学期无课表", "symbol": "inbox" },
+        { "concept": "网络失败", "symbol": "cloud_off" },
+        { "concept": "导入失败 解析错误", "symbol": "error" },
+        { "concept": "教务系统未登录", "symbol": "lock" },
+        { "concept": "无网络连接", "symbol": "wifi_off" }
+      ]
+    }
+  },
+
+  "components": {
+    "courseCard": {
+      "structure": "左侧 8dp 课程色圆点 + 课程名（titleMd / announce 590）+ 时间行（label / numeric 等宽数字）+ 地点行（bodySm）。右侧状态 pill。",
+      "background": "surface（默认） / accentTint（进行中） / courseTint 10% 面积仅用于圆点与 pill",
+      "border": "1dp border（默认） / 1.5dp accent（进行中） / 1dp 虚线 borderSoft（本周不上）",
+      "radius": "md 12dp",
+      "padding": "16dp",
+      "height": "112dp（含 2 行辅助信息）",
+      "states": ["default", "inProgress", "finished", "upcoming", "notThisWeek", "loading", "error", "empty"]
+    },
+    "button": {
+      "primary": { "bg": "accent", "text": "accentOn", "radius": "sm 8dp", "padding": "10dp 20dp", "minHeight": "48dp" },
+      "secondary": { "bg": "transparent", "border": "1dp accent", "text": "accent", "radius": "sm 8dp" },
+      "ghost": { "bg": "transparent", "text": "accent", "radius": "sm 8dp" },
+      "destructive": { "bg": "transparent", "border": "1dp danger", "text": "danger", "radius": "sm 8dp" },
+      "fab": { "bg": "accentContainer", "icon": "onAccentContainer", "shape": "lg 16dp（M3 FAB 规范）" },
+      "states": ["default", "hover", "pressed", "focused", "disabled", "loading", "success"]
+    },
+    "statusPill": {
+      "inProgress": { "bg": "accent", "text": "accentOn", "label": "进行中", "radius": "pill" },
+      "upcoming": { "bg": "surfaceContainerHigh", "text": "fg", "label": "18 分钟后", "radius": "pill" },
+      "finished": { "bg": "surfaceContainer", "text": "muted", "label": "已结束", "radius": "pill" },
+      "notThisWeek": { "bg": "surfaceContainer", "text": "muted", "label": "本周不上", "radius": "pill" },
+      "online": { "bg": "infoContainer", "text": "info", "label": "线上", "radius": "pill" }
+    },
+    "semesterSwitcher": {
+      "form": "TopAppBar 内 pill 形 Chip，文字 titleSm + 尾随 expand_more",
+      "label": "2026-2027 学年第 1 学期",
+      "switchAnim": "见 motion.recipes.semesterSwitch"
+    },
+    "weekTimeAxis": {
+      "width": "64dp 固定",
+      "content": "节次编号（numeric 等宽）+ 起止时间（caption）",
+      "style": "改时间只用 numeric 字体栈，tabular figures 保证 08:10 / 10:00 / 12:30 竖向对齐"
+    }
+  },
+
+  "a11y": {
+    "contrast": "正文 >= 4.5:1，UI 组件与图标 >= 3:1。已逐色校验。",
+    "touchTarget": "48dp 最小，元素间距 >= 8dp",
+    "focusVisible": "所有可聚焦元素有 3dp focusRing，键盘与 TalkBack 可用",
+    "semantics": "课程卡整体合并为单一可聚焦节点，播报 课程名 时间 地点 教师 状态 五要素",
+    "reducedMotion": "见 motion.globalRules.reducedMotion",
+    "colorIndependence": "状态多重编码，不单靠颜色",
+    "fontScale": "支持系统字号缩放至 200%，布局用 wrapContentHeight 不用固定高",
+    "orientation": "横屏下今日课程改为双列，周视图保持整周可见"
+  }
+}
